@@ -1,0 +1,80 @@
+@use '../abstract/variaveis' as *;
+@use '../abstract/mixins' as *;
+
+header {
+    background: $gradiente-primario;
+    padding: 2rem;
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.6rem;
+        .linha {
+            border-top: 1px solid black;
+            width: 80%;
+        }
+        ul {
+            display: inline-flex;
+            gap: 2rem;
+            list-style: none;
+            a {
+                transition: all 0.3s ease-in;
+                text-decoration: none;
+                @include ff-fs-cl($ft-textos, 1rem, $cor-primaria);
+                font-weight: 500;
+
+                &:hover {
+                    color: $cor-secundaria;
+                    transform: scale(2);
+                }
+            }
+        }
+    }
+
+    #home {
+        max-width: 1040px;
+        @include margem-central(80%);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .textos-home{
+            max-width: 464px;
+            h1 {
+                @include ff-fs-cl($ft-titulos, 2.625rem, $cor-primaria);
+                margin-bottom: 2rem;
+                span {
+                    color: $cor-secundaria;
+                }
+            }
+            button {
+                display: flex;
+                width: 280px;
+                padding: 1.5rem;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border: none;
+                border-radius: 40px;
+                background-color: $cor-secundaria;
+                transition: all 0.3s ease-in-out;
+                @include ff-fs-cl($ft-textos, 1.375rem, #FFFFFF);
+                font-weight: 600;
+                line-height: 1.125rem;
+
+                &:hover {
+                    cursor: pointer;
+                    transform: scale(1.1);
+                    background-color: transparent;
+                    color: $cor-secundaria;
+                }
+            }
+        }
+        .img-home {
+            max-width: 474px;
+            img {
+                width: 100%;
+            }
+        }
+    }   
+}

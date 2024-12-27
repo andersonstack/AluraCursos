@@ -1,0 +1,15 @@
+@use '../abstract/variaveis' as *;
+@use '../abstract/mixins';
+
+footer {
+    display: flex;
+    width: 100%;
+    padding: 1.5rem 6rem;
+    justify-content: center;
+    align-items: center;
+    background-color: $cor-terciaria;
+
+    font-size: 0.9rem;
+    font-weight: 400;
+    font-family: $ft-textos;
+}

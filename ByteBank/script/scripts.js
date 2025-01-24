@@ -1,4 +1,4 @@
-import imprimeCotacao from "./imprimeCotacao.js";
+import selecionaCotacao from "./imprimeCotacao.js";
 
 // Criação da instância do gráfico
 const graficoDolar = document.getElementById("graficoDolar");
@@ -9,38 +9,13 @@ const chart = new Chart(graficoDolar, {
     labels: [],
     datasets: [
       {
-        label: "Dólar",
+        label: "dolar",
         data: [],
         borderWidth: 1,
       },
     ],
   },
 });
-
-// Intervalo para chamar a função conectaAPI a cada 5 segundos
-setInterval(() => conectaAPI(), 5000);
-
-async function conectaAPI() {
-  try {
-    // Fazendo a requisição para a API
-    const conecta = await fetch(
-      "https://economia.awesomeapi.com.br/json/last/USD-BRL"
-    );
-    const conectaTraduzido = await conecta.json();
-
-    // Gerando o horário
-    let tempo = gerarHorario();
-
-    // Obtendo o valor da cotação do dólar
-    let valor = conectaTraduzido.USDBRL.ask;
-
-    // Atualizando o gráfico com os novos dados
-    adicionarDados(chart, tempo, valor); // Passando a instância do gráfico
-    imprimeCotacao("dolar", valor);
-  } catch (error) {
-    console.error("Erro ao buscar dados da API:", error);
-  }
-}
 
 function gerarHorario() {
   let data = new Date();
@@ -60,3 +35,37 @@ function adicionarDados(chart, legenda, dados) {
   // Atualizando o gráfico
   chart.update();
 }
+
+let workerDolar = new Worker("./script/workers/workerDolar.js");
+workerDolar.postMessage("usd");
+
+workerDolar.addEventListener("message", (event) => {
+  let tempo = gerarHorario();
+  let valor = event.data.ask;
+  selecionaCotacao("dolar", valor);
+  adicionarDados(chart, tempo, valor);
+});
+
+const graficoIene = document.getElementById("graficoIene");
+const graficoParaIene = new Chart(graficoIene, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: "iene",
+        data: [],
+        borderWidth: 1,
+      },
+    ],
+  },
+});
+
+let workerIene = new Worker("./script/workers/workerIene.js");
+workerIene.postMessage("iene");
+workerIene.addEventListener("message", (event) => {
+  let tempo = gerarHorario();
+  let valor = event.data.ask;
+  selecionaCotacao("iene", valor);
+  adicionarDados(graficoParaIene, tempo, valor);
+});
